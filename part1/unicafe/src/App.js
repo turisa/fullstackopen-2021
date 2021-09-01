@@ -13,8 +13,8 @@ const StatisticLine = ({ text, value }) => {
   );
 };
 
-const Statistics = ({ good, bad, neutral }) => {
-  const total = good + bad + neutral;
+const Statistics = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad;
   if (total === 0) {
     return <h1>No feedback given</h1>;
   }
