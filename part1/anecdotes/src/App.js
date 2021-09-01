@@ -20,17 +20,16 @@ const App = () => {
     setVotes[copy];
   };
 
+  const handleNext = () => {
+    const next = Math.floor(Math.random() * anecdotes.length);
+    setSelected(next);
+  };
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <button onClick={() => handleVote()}>vote</button>
-      <button
-        onClick={() =>
-          setSelected(Math.floor(Math.random() * anecdotes.length))
-        }
-      >
-        next anecdote
-      </button>
+      <button onClick={handleVote}>vote</button>
+      <button onClick={handleNext}>next anecdote</button>
     </div>
   );
 };
