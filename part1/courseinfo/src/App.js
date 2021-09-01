@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Header = (props) => {
   return <h1>{props.course.name}</h1>;
