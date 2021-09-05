@@ -28,17 +28,21 @@ const Countries = ({ filter, setFilter }) => {
       </div>
     );
   } else {
-    return (
-      <div>
-        {countriesToShow.map((country) => (
-          <p key={country.name}>
-            {country.name}
-            <button onClick={showCountry(country.name)}>Show</button>
-          </p>
-        ))}
-      </div>
-    );
+    return <CountryList countries={countriesToShow} />;
   }
+};
+
+const CountryList = ({ countries }) => {
+  return (
+    <div>
+      {countries.map((country) => (
+        <p key={country.name}>
+          {country.name}
+          <button onClick={showCountry(country.name)}>Show</button>
+        </p>
+      ))}
+    </div>
+  );
 };
 
 const CountryDetail = ({ country }) => {
