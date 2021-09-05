@@ -28,11 +28,11 @@ const Countries = ({ filter, setFilter }) => {
       </div>
     );
   } else {
-    return <CountryList countries={countriesToShow} />;
+    return <CountriesList countries={countriesToShow} />;
   }
 };
 
-const CountryList = ({ countries }) => {
+const CountriesList = ({ countries }) => {
   return (
     <div>
       {countries.map((country) => (
