@@ -6,11 +6,6 @@ const Countries = ({ filter, setFilter }) => {
   const countriesToShow = countries.filter((country) =>
     country.name.toLowerCase().includes(filter.toLowerCase())
   );
-  const showCountry = (name) => {
-    return () => {
-      setFilter(name);
-    };
-  };
 
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all').then((response) => {
@@ -22,16 +17,23 @@ const Countries = ({ filter, setFilter }) => {
     return <p>Too many matches, specify another filter</p>;
   }
 
-  return countriesToShow.length == 1 ? (
+  return countriesToShow.length === 1 ? (
     <div>
       <CountryDetail country={countriesToShow[0]} />
+      <WeatherDetail country={countriesToShow[0]} />
     </div>
   ) : (
-    <CountriesList countries={countriesToShow} />
+    <CountriesList countries={countriesToShow} setFilter={setFilter} />
   );
 };
 
-const CountriesList = ({ countries }) => {
+const CountriesList = ({ countries, setFilter }) => {
+  const showCountry = (country) => {
+    return () => {
+      setFilter(country);
+    };
+  };
+
   return (
     <div>
       {countries.map((country) => (
@@ -45,20 +47,6 @@ const CountriesList = ({ countries }) => {
 };
 
 const CountryDetail = ({ country }) => {
-  const [weather, setWeather] = useState({});
-
-  useEffect(() => {
-    const api_key = process.env.REACT_APP_API_KEY;
-    axios
-      .get(
-        `http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`
-      )
-      .then((response) => {
-        console.log(response.data.current);
-        setWeather(response.data.current);
-      });
-  }, [country.capital]);
-
   return (
     <div>
       <h1>{country.name}</h1>
@@ -76,6 +64,31 @@ const CountryDetail = ({ country }) => {
         height="auto"
         alt={`Flag of ${country.name}`}
       />
+    </div>
+  );
+};
+
+const WeatherDetail = ({ country }) => {
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    const api_key = process.env.REACT_APP_API_KEY;
+    axios
+      .get(
+        `http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`
+      )
+      .then((response) => {
+        console.log(response.data.current);
+        setWeather(response.data.current);
+      });
+  }, [country.capital]);
+
+  if (!weather) {
+    return <p>Fetching weather...</p>;
+  }
+
+  return (
+    <div>
       <h2>Weather in {country.name}</h2>
       <p>
         <strong>temperature: {weather.temperature}</strong> Celsius
