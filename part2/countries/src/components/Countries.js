@@ -17,11 +17,16 @@ const Countries = ({ filter, setFilter }) => {
     return <p>Too many matches, specify another filter</p>;
   }
 
+<<<<<<< HEAD
   return countriesToShow.length === 1 ? (
     <div>
       <CountryDetail country={countriesToShow[0]} />
       <WeatherDetail country={countriesToShow[0]} />
     </div>
+=======
+  return countriesToShow.length == 1 ? (
+    <CountryDetail country={countriesToShow[0]} />
+>>>>>>> 0e4813423b78bb968fea1dfcac974a4f72ffe676
   ) : (
     <CountriesList countries={countriesToShow} setFilter={setFilter} />
   );
