@@ -23,9 +23,7 @@ const Countries = ({ filter, setFilter }) => {
   }
 
   return countriesToShow.length == 1 ? (
-    <div>
-      <CountryDetail country={countriesToShow[0]} />
-    </div>
+    <CountryDetail country={countriesToShow[0]} />
   ) : (
     <CountriesList countries={countriesToShow} />
   );
