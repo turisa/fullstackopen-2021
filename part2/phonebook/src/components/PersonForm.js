@@ -7,6 +7,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
 
   const addPerson = (event) => {
     event.preventDefault();
+
     const personObject = { name: newName, number: newNumber };
 
     const existingPersons = persons.filter((person) => person.name === newName);
@@ -17,11 +18,13 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
       );
       if (updateNumber) {
         const id = existingPersons[0].id;
+
         PersonService.update(id, personObject)
           .then((personCreated) => {
             setPersons(
               persons.filter((person) => person.id !== id).concat(personCreated)
             );
+
             setNewName('');
             setNewNumber('');
           })
@@ -33,6 +36,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
             setTimeout(() => {
               setNotification(null);
             }, 5000);
+
             setPersons(persons.filter((person) => person.id !== id));
           });
       }
@@ -45,6 +49,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
         setTimeout(() => {
           setNotification(null);
         }, 5000);
+
         setPersons(persons.concat(personCreated));
         setNewName('');
         setNewNumber('');
