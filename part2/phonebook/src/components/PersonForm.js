@@ -11,10 +11,29 @@ const PersonForm = ({ persons, setPersons }) => {
       const personExists =
         personsReturned.filter((person) => person.name === newName).length ===
         1;
+
       if (personExists) {
-        alert(`${newName} is already added to the phonebook.`);
+        const updateNumber = window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        );
+
+        if (updateNumber) {
+          const personObject = { name: newName, number: newNumber };
+          const id = personsReturned.filter(
+            (person) => person.name === newName
+          )[0].id;
+
+          PersonService.update(id, personObject).then((personCreated) => {
+            setPersons(
+              persons.filter((person) => person.id !== id).concat(personCreated)
+            );
+            setNewName('');
+            setNewNumber('');
+          });
+        }
       } else {
         const personObject = { name: newName, number: newNumber };
+
         PersonService.create(personObject).then((personCreated) => {
           setPersons(persons.concat(personCreated));
           setNewName('');
