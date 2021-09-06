@@ -16,9 +16,9 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
       const updateNumber = window.confirm(
         `${newName} is already added to the phonebook, replace the old number with a new one?`
       );
+
       if (updateNumber) {
         const id = existingPersons[0].id;
-
         PersonService.update(id, personObject)
           .then((personCreated) => {
             setPersons(
