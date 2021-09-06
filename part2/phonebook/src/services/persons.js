@@ -20,11 +20,11 @@ const del = (id) => {
   return axios.delete(`${baseUrl}/${id}`).then((response) => response.data);
 };
 
-const PersonsService = {
+const PersonService = {
   getAll,
   create,
   update,
   del,
 };
 
-export default PersonsService;
+export default PersonService;
