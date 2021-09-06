@@ -10,6 +10,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
 
     const existingPersons = persons.filter((person) => person.name === newName);
     const personExists = existingPersons.length === 1;
+
     if (personExists) {
       const updateNumber = window.confirm(
         `${newName} is already added to the phonebook, replace the old number with a new one?`
@@ -18,6 +19,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
       if (updateNumber) {
         const id = existingPersons[0].id;
         const personObject = { name: newName, number: newNumber };
+
         PersonService.update(id, personObject)
           .then((personCreated) => {
             setPersons(
@@ -41,6 +43,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
       }
     } else {
       const personObject = { name: newName, number: newNumber };
+
       PersonService.create(personObject).then((personCreated) => {
         setNotification({
           message: `Added ${newName}`,
