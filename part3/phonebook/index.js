@@ -61,7 +61,7 @@ app.post('/api/persons', (request, response) => {
     !body.number ||
     persons.find((person) => person.name === body.name)
   ) {
-    response.status(400).end();
+    return response.status(400).end();
   }
 
   const person = {
