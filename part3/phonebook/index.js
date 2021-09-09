@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 morgan.token('body', (req) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : null;
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
 );
+app.use(cors());
 
 let persons = [
   {
@@ -84,7 +86,7 @@ app.post('/api/persons', (request, response) => {
 });
 
 app.delete('/api/persons/:id', (request, response) => {
-  id = request.body.id;
+  id = Number(request.params.id);
   persons = persons.filter((person) => person.id !== id);
 
   response.status(204).end();
