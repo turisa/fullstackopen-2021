@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+
+const Person = require('./models/person');
 
 morgan.token('body', (req) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : null;
@@ -14,54 +17,45 @@ app.use(
 );
 app.use(cors());
 
-let persons = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456',
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-  },
-];
-
 const generateId = () => {
   const maxId = Math.max(persons.map((person) => person.id));
   return maxId + 1;
 };
 
 app.get('/info', (request, response) => {
-  const content = `<p>Phonebook has info of ${
-    persons.length
-  } people</p><p>${new Date()}</p>`;
-  response.send(content);
+  Person.find({}).then((persons) => {
+    const content = `<p>Phonebook has info of ${
+      persons.length
+    } people</p><p>${new Date()}</p>`;
+    response.send(content);
+  });
 });
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons);
+  Person.find({}).then((persons) => {
+    console.log(persons.length);
+    response.json(persons);
+  });
 });
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        return response.json(person);
+      }
+      response.status(404).end();
+    })
+    .catch((error) => next(error));
+});
 
-  if (!person) {
-    return response.status(404).end();
-  }
+app.put('/api/persons/:id', (request, response, next) => {
+  const { name, number } = request.body;
+  const person = { name, number };
 
-  response.json(person);
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((updatedPerson) => response.json(updatedPerson))
+    .catch((error) => next(error));
 });
 
 app.post('/api/persons', (request, response) => {
@@ -75,24 +69,25 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).end();
   }
 
-  const person = {
+  const person = new Person({
     id: generateId(),
     name: body.name,
     number: body.number,
-  };
-  persons = persons.concat(person);
-
-  response.json(person);
+  });
+  person.save().then((savedPerson) => response.json(savedPerson));
 });
 
 app.delete('/api/persons/:id', (request, response) => {
-  id = Number(request.params.id);
-  persons = persons.filter((person) => person.id !== id);
-
-  response.status(204).end();
+  const id = request.params.id;
+  Person.findOneAndDelete(id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
