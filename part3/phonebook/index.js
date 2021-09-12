@@ -65,10 +65,10 @@ app.post('/api/persons', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (error, request, response, next) => {
   const id = request.params.id;
   Person.findOneAndDelete(id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
