@@ -44,19 +44,31 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
     } else {
       const personObject = { name: newName, number: newNumber };
 
-      PersonService.create(personObject).then((personCreated) => {
-        setNotification({
-          message: `Added ${newName}`,
-          type: 'success',
-        });
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
+      PersonService.create(personObject)
+        .then((personCreated) => {
+          setNotification({
+            message: `Added ${newName}`,
+            type: 'success',
+          });
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
 
-        setPersons(persons.concat(personCreated));
-        setNewName('');
-        setNewNumber('');
-      });
+          setPersons(persons.concat(personCreated));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          const response = error.response.data;
+          const message = response.error;
+          setNotification({
+            message: message,
+            type: 'error',
+          });
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+        });
     }
   };
 
