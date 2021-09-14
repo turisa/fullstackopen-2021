@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Thin Ice Blog",
+    "author": "WWF Arctic",
+    "url": "http://arctic.blogs.panda.org/",
+    "likes": "0"
+}
