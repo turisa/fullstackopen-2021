@@ -14,6 +14,7 @@ describe('total likes', () => {
 
   test('when list has no blogs, equals 0', () => {
     const result = listHelper.totalLikes([]);
+    expect(result).toBe(0);
   });
 
   test('when list has only one blog, equals the likes of that', () => {
