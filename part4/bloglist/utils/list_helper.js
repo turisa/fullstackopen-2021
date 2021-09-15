@@ -2,9 +2,9 @@ const dummy = (blogs) => {
   return 1;
 };
 
-const totalLikes = (blogPosts) => {
-  const likes = blogPosts.reduce((sum, blog) => {
-    return sum + blog.likes;
+const totalLikes = (blogList) => {
+  const likes = blogList.reduce((sum, blog) => {
+    return sum + blogList.likes;
   }, 0);
   return likes;
 };
