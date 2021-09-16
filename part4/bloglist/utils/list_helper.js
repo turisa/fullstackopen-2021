@@ -17,19 +17,6 @@ const totalLikes = (blogList) => {
   return likes;
 };
 
-const mostBlogs = (blogList) => {
-  const authorBlogCount = {};
-
-  blogList.forEach((blog) => authorBlogCount[blog.author]++);
-  const author = Math.max(...Object.values(authorBlogCount));
-
-  return author;
-};
-
-const mostLikes = (blogList) => {
-  //todo
-};
-
 module.exports = {
   dummy,
   totalLikes,
