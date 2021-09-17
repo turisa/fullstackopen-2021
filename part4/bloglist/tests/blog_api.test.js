@@ -67,6 +67,11 @@ test('a valid blog can be added', async () => {
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
+
+  const response = await api.get('/api/blogs');
+  const blogs = response.body;
+
+  expect(blogs.length).toBe(initialBlogs.length + 1);
 });
 
 test('if the likes property is missing from the request, it will default to 0', async () => {
@@ -80,6 +85,14 @@ test('if the likes property is missing from the request, it will default to 0', 
   const blog = response.body;
 
   expect(blog.likes).toBe(0);
+});
+
+test('if the title and url properties are missing from the request data, the backend responds with status 400', async () => {
+  const newBlog = {
+    author: 'Robert C. Martin',
+  };
+
+  await api.post('/api/blogs').send(newBlog).expect(400);
 });
 
 afterAll(() => {
