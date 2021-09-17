@@ -110,6 +110,22 @@ test('likes of a blog can be updated', async () => {
   expect(updatedBlog.likes).toBe(blogToUpdate.likes + 1);
 });
 
+test('a blog can be deleted', async () => {
+  const blogObject = {
+    title: 'Too Clean?',
+    author: 'Robert C. Martin',
+    url: 'https://blog.cleancoder.com/uncle-bob/2018/08/13/TooClean.html',
+    likes: 2,
+  };
+
+  const response = await api.post('/api/blogs').send(blogObject);
+  const blogToDelete = response.body;
+
+  console.log(blogToDelete);
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
