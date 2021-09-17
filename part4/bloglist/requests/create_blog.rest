@@ -4,6 +4,5 @@ Content-Type: application/json
 {
     "title": "Thin Ice Blog",
     "author": "WWF Arctic",
-    "url": "http://arctic.blogs.panda.org/",
-    "likes": "0"
+    "url": "http://arctic.blogs.panda.org/"
 }
