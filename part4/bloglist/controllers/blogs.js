@@ -18,7 +18,7 @@ blogsRouter.put('/:id', async (request, response) => {
   response.json(updatedBlog);
 });
 
-blogsRouter.post('/', (request, response) => {
+blogsRouter.post('/', async (request, response) => {
   const { author, title, url, likes } = request.body;
 
   if (!title && !url) {
@@ -33,9 +33,8 @@ blogsRouter.post('/', (request, response) => {
   };
   const blog = new Blog(blogObject);
 
-  blog.save().then((result) => {
-    response.status(201).json(result);
-  });
+  const result = await blog.save();
+  response.status(201).json(result);
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
