@@ -6,6 +6,17 @@ blogsRouter.get('/', (request, response) => {
   response.json(blogs);
 });
 
+blogsRouter.put('/:id', (request, response) => {
+  const likes = request.body.likes;
+
+  if (!likes) {
+    return response.status(400).end();
+  }
+
+  const updatedBlog = Blog.findByIdAndUpdate(request.params.id, { likes });
+  response.json(updatedBlog);
+});
+
 blogsRouter.post('/', (request, response) => {
   const { author, title, url, likes } = request.body;
 
