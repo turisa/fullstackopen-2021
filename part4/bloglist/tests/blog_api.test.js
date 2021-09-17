@@ -30,18 +30,6 @@ const initialBlogs = [
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
     likes: 10,
   },
-  {
-    title: 'TDD harms architecture',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-    likes: 0,
-  },
-  {
-    title: 'Type wars',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-    likes: 2,
-  },
 ];
 
 beforeEach(async () => {
@@ -69,6 +57,19 @@ test('a valid blog can be added', async () => {
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
+});
+
+test('if the likes property is missing from the request, it will default to 0', async () => {
+  const newBlog = {
+    title: 'TDD harms architecture',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+  };
+
+  const response = await api.post('/api/blogs').send(newBlog);
+  const blog = response.body;
+
+  expect(blog.likes).toBe(0);
 });
 
 afterAll(() => {
