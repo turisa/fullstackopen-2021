@@ -8,7 +8,7 @@ blogsRouter.get('/', (request, response) => {
 });
 
 blogsRouter.post('/', (request, response) => {
-  const { author, title, url } = request.body;
+  const { author, title, url, likes } = request.body;
 
   if (!author || !title || !url) {
     return response.status(400).end();
