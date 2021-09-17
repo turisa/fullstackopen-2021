@@ -39,15 +39,11 @@ beforeEach(async () => {
   await Blog.insertMany(initialBlogs);
 });
 
-test('5 blogs are returned as json', async () => {
-  const response = await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
+test('blogs have a unique identifier named id', async () => {
+  const response = await api.get('/api/blogs');
+  const blogs = response.body;
 
-  const blogsReturned = response.body;
-
-  expect(blogsReturned.length).toBe(5);
+  blogs.forEach((blog) => expect(blog.id).toBeDefined());
 });
 
 test('a valid blog can be added', async () => {
