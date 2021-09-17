@@ -24,12 +24,6 @@ const initialBlogs = [
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
     likes: 12,
   },
-  {
-    title: 'First class tests',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-    likes: 10,
-  },
 ];
 
 beforeEach(async () => {
@@ -93,6 +87,27 @@ test('if the title and url properties are missing from the request data, the bac
   };
 
   await api.post('/api/blogs').send(newBlog).expect(400);
+});
+
+test('likes of a blog can be updated', async () => {
+  let response;
+
+  const blogObject = {
+    title: 'First class tests',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    likes: 10,
+  };
+
+  response = await api.post('/api/blogs').send(blogObject);
+  const blogToUpdate = response.body;
+
+  const newBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
+
+  response = await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog);
+  const updatedBlog = response.body;
+
+  expect(updatedBlog.likes).toBe(blogToUpdate.likes + 1);
 });
 
 afterAll(() => {
