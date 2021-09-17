@@ -14,7 +14,7 @@ blogsRouter.post('/', (request, response) => {
     return response.status(400).end();
   }
 
-  const blogObject = { author, title, url, likes: 0 };
+  const blogObject = { author, title, url, likes: likes || 0 };
   const blog = new Blog(blogObject);
 
   blog.save().then((result) => {
