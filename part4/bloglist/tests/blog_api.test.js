@@ -38,6 +38,16 @@ beforeEach(async () => {
   await Blog.insertMany(initialBlogs);
 });
 
+test('the application returns the correct amount of blog posts in the JSON format', async () => {
+  const response = await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/);
+
+  const blogs = response.body;
+  expect(blogs.length).toBe(initialBlogs.length);
+});
+
 test('blogs have a unique identifier named id', async () => {
   const response = await api.get('/api/blogs');
   const blogs = response.body;
