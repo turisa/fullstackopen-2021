@@ -26,7 +26,7 @@ blogsRouter.post('/', (request, response) => {
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await blog.delete(request.params.id);
+  await Blog.delete(request.params.id);
   response.status(204).end();
 });
 
