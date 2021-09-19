@@ -82,7 +82,7 @@ blogsRouter.delete('/:id', async (request, response) => {
 
   const user = await User.findById(decodedToken.id);
 
-  if (!user._id.equals(blogToDelete.user)) {
+  if (!user._id.toString() === blogToDelete.user.toString()) {
     return response.status(401).json({ error: 'user is not the creator' });
   }
 
