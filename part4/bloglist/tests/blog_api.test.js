@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 const api = supertest(app);
 
-describe('when there are 5 blogs in db and a valid user', () => {
+describe('when there are 5 blogs in db and a user is authenticated with a token', () => {
   let loginToken;
 
   beforeEach(async () => {
@@ -41,11 +41,11 @@ describe('when there are 5 blogs in db and a valid user', () => {
     blogs.forEach((blog) => expect(blog.id).toBeDefined());
   });
 
-  test('creation will fail if token is missing', async () => {
+  test('creation will fail if the token is missing', async () => {
     await api.post('/api/blogs').send(helper.validBlog).expect(401);
   });
 
-  test('creation will fail if token is invalid', async () => {
+  test('creation will fail if the token is invalid', async () => {
     await api
       .post('/api/blogs')
       .send(helper.validBlog)
@@ -53,7 +53,7 @@ describe('when there are 5 blogs in db and a valid user', () => {
       .expect(401);
   });
 
-  test('creation will succeed if token is valid', async () => {
+  test('creation will succeed if the token is valid', async () => {
     await api
       .post('/api/blogs')
       .send(helper.validBlog)
@@ -61,7 +61,26 @@ describe('when there are 5 blogs in db and a valid user', () => {
       .expect(201);
   });
 
-  // todo if the likes property is missing from the request, it will default to 0
+  test('if if the likes property is missing from the request, it will default to 0', async () => {
+    const response = await api
+      .post('/api/blogs')
+      .send(helper.blogWithoutLikes)
+      .set('Authorization', `bearer ${loginToken}`)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    expect(response.body.likes).toBe(0);
+  });
+
+  test('todo if the title and url properties are missing from the request data, the backend responds with status 400', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.invalidBlog)
+      .set('Authorization', `bearer ${loginToken}`)
+      .expect(400);
+  });
+
+  // X todo if the likes property is missing from the request, it will default to 0
   // todo if the title and url properties are missing from the request data, the backend responds with status 400
   // todo likes of a blog can be updated
   // todo a blog can be deleted
