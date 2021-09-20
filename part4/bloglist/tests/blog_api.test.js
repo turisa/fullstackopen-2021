@@ -85,10 +85,6 @@ describe('when a user is authenticated with a valid token', () => {
       .set('Authorization', `bearer ${loginToken}`)
       .expect(400);
   });
-
-  test('likes of a blog can be updated', async () => {
-    // todo
-  });
 });
 
 afterAll(() => {
