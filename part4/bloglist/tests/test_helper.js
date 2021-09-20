@@ -4,6 +4,18 @@ const validUser = {
   password: 'password',
 };
 
+const userWithInvalidPassword = {
+  name: 'Alice',
+  username: 'alice',
+  password: 'pa',
+};
+
+const userWithInvalidUsername = {
+  name: 'Alice',
+  username: 'al',
+  password: 'password',
+};
+
 const validLogin = {
   username: 'alice',
   password: 'password',
@@ -66,5 +78,7 @@ module.exports = {
   validLogin,
   invalidBlog,
   blogWithoutLikes,
+  userWithInvalidPassword,
+  userWithInvalidUsername,
   initialBlogs,
 };
