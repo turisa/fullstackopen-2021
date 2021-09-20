@@ -78,7 +78,7 @@ describe('when a user is authenticated with a valid token', () => {
     expect(response.body.likes).toBe(0);
   });
 
-  test('todo if the title and url properties are missing from the request data, the backend responds with status 400', async () => {
+  test('if the title and url properties are missing from the request data, the backend responds with status 400', async () => {
     await api
       .post('/api/blogs')
       .send(helper.invalidBlog)
