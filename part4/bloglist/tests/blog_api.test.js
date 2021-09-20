@@ -9,18 +9,10 @@ const User = require('../models/user');
 
 const api = supertest(app);
 
-describe('when there are 5 blogs in db and a user is authenticated with a token', () => {
-  let loginToken;
-
+describe('when there are 5 blogs in db and no authenticated users', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
     await Blog.insertMany(helper.initialBlogs);
-
-    await User.deleteMany({});
-    await api.post('/api/users').send(helper.validUser);
-
-    const response = await api.post('/api/login').send(helper.validLogin);
-    loginToken = response.body.token;
   });
 
   test('the application returns 5 blog posts in the JSON format', async () => {
@@ -41,11 +33,11 @@ describe('when there are 5 blogs in db and a user is authenticated with a token'
     blogs.forEach((blog) => expect(blog.id).toBeDefined());
   });
 
-  test('creation will fail if the token is missing', async () => {
+  test('creation will fail if a token is missing', async () => {
     await api.post('/api/blogs').send(helper.validBlog).expect(401);
   });
 
-  test('creation will fail if the token is invalid', async () => {
+  test('creation will fail if a token is invalid', async () => {
     await api
       .post('/api/blogs')
       .send(helper.validBlog)
@@ -53,7 +45,24 @@ describe('when there are 5 blogs in db and a user is authenticated with a token'
       .expect(401);
   });
 
-  test('creation will succeed if the token is valid', async () => {
+  // todo likes of a blog can be updated
+  // todo a blog can be deleted
+});
+
+describe('when a user is authenticated with a valid token', () => {
+  let loginToken;
+
+  beforeEach(async () => {
+    await Blog.deleteMany({});
+
+    await User.deleteMany({});
+    await api.post('/api/users').send(helper.validUser);
+
+    const response = await api.post('/api/login').send(helper.validLogin);
+    loginToken = response.body.token;
+  });
+
+  test('creation will succeed', async () => {
     await api
       .post('/api/blogs')
       .send(helper.validBlog)
@@ -80,10 +89,9 @@ describe('when there are 5 blogs in db and a user is authenticated with a token'
       .expect(400);
   });
 
-  // X todo if the likes property is missing from the request, it will default to 0
-  // todo if the title and url properties are missing from the request data, the backend responds with status 400
-  // todo likes of a blog can be updated
-  // todo a blog can be deleted
+  test('likes of a blog can be updated', async () => {
+    // todo
+  });
 });
 
 afterAll(() => {
