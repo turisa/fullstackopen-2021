@@ -44,9 +44,6 @@ describe('when there are 5 blogs in db and no authenticated users', () => {
       .set('Authorization', 'InvalidToken')
       .expect(401);
   });
-
-  // todo likes of a blog can be updated
-  // todo a blog can be deleted
 });
 
 describe('when a user is authenticated with a valid token', () => {
