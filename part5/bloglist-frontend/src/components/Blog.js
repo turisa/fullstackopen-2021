@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [view, setView] = useState(false);
 
   const buttonLabel = view ? 'hide' : 'view';
@@ -22,12 +22,20 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     }
   };
 
+  const handleDelete = async () => {
+    // todo
+  };
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
+  };
+
+  const showIfAddedByUser = {
+    display: blog.user.username === user.username ? '' : 'none',
   };
 
   return (
@@ -43,6 +51,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           <button onClick={handleUpvote}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        <button style={showIfAddedByUser} onClick={handleDelete}>
+          delete
+        </button>
       </div>
     </div>
   );
