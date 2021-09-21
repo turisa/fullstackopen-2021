@@ -11,11 +11,13 @@ blogsRouter.get('/', async (request, response) => {
 });
 
 blogsRouter.put('/:id', async (request, response) => {
-  const blogObject = request.body;
+  const { author, title, url, likes } = request.body;
+
+  const blogObject = { author, title, url, likes };
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
-    { likes: blogObject.likes },
+    blogObject,
     { new: true }
   );
 
