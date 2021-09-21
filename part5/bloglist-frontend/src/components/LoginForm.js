@@ -6,7 +6,7 @@ import Notification from './Notification';
 const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [notification, setNotification] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -23,11 +23,8 @@ const LoginForm = ({ setUser }) => {
 
       setUser(user); // causes this LoginForm to unmount
     } catch (exception) {
-      setNotification({
-        message: 'invalid username or password',
-        type: 'error',
-      });
-      setTimeout(() => setNotification(null), 5000);
+      setErrorMessage('invalid username or password');
+      setTimeout(() => setErrorMessage(null), 5000);
     }
   };
 
@@ -42,7 +39,7 @@ const LoginForm = ({ setUser }) => {
   return (
     <div>
       <h1>Log in to application</h1>
-      <Notification notification={notification} />
+      <Notification errorMessage={errorMessage} />
       <form onSubmit={handleLogin}>
         <div>
           username
