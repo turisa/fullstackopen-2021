@@ -7,7 +7,8 @@ const BlogForm = ({ blogs, setBlogs }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const [notification, setNotification] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleCreate = async (event) => {
     event.preventDefault();
@@ -15,8 +16,8 @@ const BlogForm = ({ blogs, setBlogs }) => {
     const blog = await blogService.create({ title, author, url });
     setBlogs(blogs.concat(blog));
 
-    setNotification({ message: `a new blog ${title} added`, type: 'success' });
-    setTimeout(() => setNotification(null), 5000);
+    setSuccessMessage(`a new blog ${title} added`);
+    setTimeout(() => setSuccessMessage(null), 5000);
 
     setTitle('');
     setAuthor('');
@@ -38,7 +39,7 @@ const BlogForm = ({ blogs, setBlogs }) => {
   return (
     <div>
       <h1>create new</h1>
-      <Notification notification={notification} />
+      <Notification successMessage={successMessage} />
       <form onSubmit={handleCreate}>
         <div>
           title:
