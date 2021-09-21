@@ -52,8 +52,8 @@ const remove = async ({ id }) => {
 const blogService = {
   setToken,
   create,
-  remove,
   update,
+  remove,
   getAll,
 };
 
