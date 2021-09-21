@@ -35,15 +35,26 @@ const update = async (newObject) => {
     newObject,
     config
   );
-  console.log(response);
+
   return response.data;
+};
+
+const remove = async ({ id }) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  const response = await axios.delete(`${baseUrl}/${id}`, config);
+  console.log(response.data);
 };
 
 const blogService = {
   setToken,
   create,
-  getAll,
+  remove,
   update,
+  getAll,
 };
 
 export default blogService;
