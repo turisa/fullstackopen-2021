@@ -18,12 +18,21 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
 
       setBlogs(blogs.map((blog) => (blog.id === newBlog.id ? newBlog : blog)));
     } catch (exception) {
-      // later
+      // todo notification ?
     }
   };
 
   const handleDelete = async () => {
-    // todo
+    try {
+      const result = window.confirm(`Delete blog ${blog.title}`);
+      if (result) {
+        await blogService.remove(blog.id);
+
+        setBlogs(blogs.filter((blog_) => blog_.id !== blog.id));
+      }
+    } catch (exception) {
+      // todo notification
+    }
   };
 
   const blogStyle = {

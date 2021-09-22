@@ -13,15 +13,19 @@ const BlogForm = ({ blogs, setBlogs }) => {
   const handleCreate = async (event) => {
     event.preventDefault();
 
-    const blog = await blogService.create({ title, author, url });
-    setBlogs(blogs.concat(blog));
+    try {
+      const blog = await blogService.create({ title, author, url });
+      setBlogs(blogs.concat(blog));
 
-    setSuccessMessage(`a new blog ${title} added`);
-    setTimeout(() => setSuccessMessage(null), 5000);
+      setSuccessMessage(`a new blog ${title} added`);
+      setTimeout(() => setSuccessMessage(null), 5000);
 
-    setTitle('');
-    setAuthor('');
-    setUrl('');
+      setTitle('');
+      setAuthor('');
+      setUrl('');
+    } catch (exception) {
+      // todo notification
+    }
   };
 
   const handleTitleChange = (event) => {
