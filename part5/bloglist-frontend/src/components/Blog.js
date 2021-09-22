@@ -1,38 +1,13 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 
-const Blog = ({ blog, blogs, setBlogs, user }) => {
+const Blog = ({ upvoteBlog, deleteBlog, blog, user }) => {
   const [view, setView] = useState(false);
 
   const buttonLabel = view ? 'hide' : 'view';
   const showWhenView = { display: view ? '' : 'none' };
 
-  const handleToggleView = () => {
+  const toggleView = () => {
     setView(!view);
-  };
-
-  const handleUpvote = async () => {
-    const newBlog = { ...blog, likes: blog.likes + 1 };
-    try {
-      await blogService.update(newBlog);
-
-      setBlogs(blogs.map((blog) => (blog.id === newBlog.id ? newBlog : blog)));
-    } catch (exception) {
-      // todo notification ?
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const result = window.confirm(`Delete blog ${blog.title}`);
-      if (result) {
-        await blogService.remove(blog.id);
-
-        setBlogs(blogs.filter((blog_) => blog_.id !== blog.id));
-      }
-    } catch (exception) {
-      // todo notification
-    }
   };
 
   const blogStyle = {
@@ -51,16 +26,16 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author}{' '}
-        <button onClick={handleToggleView}>{buttonLabel}</button>
+        <button onClick={toggleView}>{buttonLabel}</button>
       </div>
       <div style={showWhenView}>
         <p>{blog.url}</p>
         <p>
           {blog.likes}
-          <button onClick={handleUpvote}>like</button>
+          <button onClick={() => upvoteBlog(blog)}>like</button>
         </p>
         <p>{blog.user.name}</p>
-        <button style={showIfAddedByUser} onClick={handleDelete}>
+        <button style={showIfAddedByUser} onClick={() => deleteBlog(blog)}>
           delete
         </button>
       </div>

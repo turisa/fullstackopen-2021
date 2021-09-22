@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import blogService from '../services/blogs';
 import Notification from './Notification';
@@ -7,7 +7,6 @@ const BlogForm = ({ blogs, setBlogs }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const handleCreate = async (event) => {
