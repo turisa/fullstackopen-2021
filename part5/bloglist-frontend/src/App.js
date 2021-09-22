@@ -5,17 +5,15 @@ import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import blogService from './services/blogs';
 import Togglable from './components/Togglable';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  const handleLogout = (event) => {
-    event.preventDefault();
-
-    window.localStorage.removeItem('loggedBlogappUser');
-    setUser(null);
-  };
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -33,7 +31,26 @@ const App = () => {
     }
   }, []);
 
-  const blogFormRef = useRef();
+  const handleLogout = (event) => {
+    event.preventDefault();
+
+    window.localStorage.removeItem('loggedBlogappUser');
+    setUser(null);
+  };
+
+  const createBlog = async (blogObject) => {
+    try {
+      const blog = await blogService.create(blogObject);
+      setBlogs(blogs.concat(blog));
+
+      setSuccessMessage(`a new blog ${blogObject.title} added`);
+      setTimeout(() => setSuccessMessage(null), 5000);
+
+      blogFormRef.current.toggleVisibility();
+    } catch (exception) {
+      // todo notification
+    }
+  };
 
   const upvoteBlog = async (blog) => {
     const newBlog = { ...blog, likes: blog.likes + 1 };
@@ -42,7 +59,7 @@ const App = () => {
 
       setBlogs(blogs.map((blog) => (blog.id === newBlog.id ? newBlog : blog)));
     } catch (exception) {
-      // todo notification ?
+      // todo notification
     }
   };
 
@@ -64,11 +81,15 @@ const App = () => {
   ) : (
     <div>
       <h1>blogs</h1>
+      <Notification
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+      />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm blogs={blogs} setBlogs={setBlogs} />
+        <BlogForm createBlog={createBlog} />
       </Togglable>
       {blogs
         .sort((a, b) => b.likes - a.likes)
