@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import Blog from './components/Blog';
-import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
-import blogService from './services/blogs';
+import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
 import Notification from './components/Notification';
+
+import blogService from './services/blogs';
+import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -30,6 +32,20 @@ const App = () => {
       setUser(user);
     }
   }, []);
+
+  const login = async (userObject) => {
+    try {
+      const user = await loginService.login(userObject);
+
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
+
+      blogService.setToken(user.token);
+      setUser(user);
+    } catch (exception) {
+      setErrorMessage('invalid username or password');
+      setTimeout(() => setErrorMessage(null), 5000);
+    }
+  };
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -77,7 +93,11 @@ const App = () => {
   };
 
   return !user ? (
-    <LoginForm setUser={setUser} />
+    <div>
+      <h1>Log in to application</h1>
+      <Notification errorMessage={errorMessage} />
+      <LoginForm login={login} />
+    </div>
   ) : (
     <div>
       <h1>blogs</h1>
