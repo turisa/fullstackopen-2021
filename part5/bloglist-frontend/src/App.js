@@ -22,7 +22,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // happens if page is refreshed
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
 
     if (loggedUserJSON) {
@@ -64,7 +63,7 @@ const App = () => {
 
       blogFormRef.current.toggleVisibility();
     } catch (exception) {
-      // todo notification
+      // todo
     }
   };
 
@@ -75,7 +74,7 @@ const App = () => {
 
       setBlogs(blogs.map((blog) => (blog.id === newBlog.id ? newBlog : blog)));
     } catch (exception) {
-      // todo notification
+      // todo
     }
   };
 
@@ -88,7 +87,7 @@ const App = () => {
         setBlogs(blogs.filter((blog_) => blog_.id !== blog.id));
       }
     } catch (exception) {
-      // todo notification
+      // todo
     }
   };
 
