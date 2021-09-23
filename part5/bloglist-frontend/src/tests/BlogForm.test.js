@@ -43,7 +43,6 @@ describe('<BlogForm />', () => {
     fireEvent.submit(form);
 
     expect(mockCreateBlog.mock.calls).toHaveLength(1);
-    console.log(mockCreateBlog.mock.calls);
     expect(mockCreateBlog.mock.calls[0][0]).toEqual(blogObject);
   });
 });
