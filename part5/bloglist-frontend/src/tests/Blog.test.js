@@ -1,6 +1,5 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { prettyDOM } from '@testing-library/dom';
 import { render, fireEvent } from '@testing-library/react';
 import Blog from '../components/Blog';
 
