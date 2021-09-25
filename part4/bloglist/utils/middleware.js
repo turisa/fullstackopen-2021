@@ -3,6 +3,8 @@ const unknownEndpoint = (request, response) => {
 };
 
 const errorHandler = (error, request, response, next) => {
+  console.log(error);
+
   switch (error.name) {
     case 'JsonWebTokenError':
       return response.status(401).json({ error: 'invalid token' });
