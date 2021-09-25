@@ -23,16 +23,18 @@ const Blog = ({ upvoteBlog, deleteBlog, blog, user }) => {
   };
 
   return (
-    <div style={blogStyle}>
-      <div className="blogView">
-        {blog.title} {blog.author}{' '}
-        <button onClick={toggleView}>{buttonLabel}</button>
-      </div>
+    <div className="blog" style={blogStyle}>
+      {blog.title} {blog.author}{' '}
+      <button className="toggleViewButton" onClick={toggleView}>
+        {buttonLabel}
+      </button>
       <div style={showWhenView} className="togglableBlogView">
         <p>{blog.url}</p>
         <p>
           {blog.likes}
-          <button onClick={() => upvoteBlog(blog)}>like</button>
+          <button className="likeButton" onClick={() => upvoteBlog(blog)}>
+            like
+          </button>
         </p>
         <p>{blog.user.name}</p>
         <button style={showIfAddedByUser} onClick={() => deleteBlog(blog)}>
