@@ -42,7 +42,7 @@ describe('<Blog />', () => {
   test('the component renders the title and author, but does not render the url or number of likes', () => {
     let div;
 
-    div = component.container.querySelector('.blogView');
+    div = component.container.querySelector('.blog');
 
     expect(div).toHaveTextContent(blog.title);
     expect(div).toHaveTextContent(blog.author);
