@@ -5,10 +5,7 @@ import Notification from './Notification';
 import Filter from './Filter';
 
 import { voteFor } from '../reducers/anecdoteReducer';
-import {
-  resetNotification,
-  setNotification,
-} from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
 const AnecdotesList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
@@ -19,10 +16,6 @@ const AnecdotesList = () => {
     dispatch(voteFor(anecdote));
 
     dispatch(setNotification(`You voted '${anecdote.content}'`));
-
-    setTimeout(() => {
-      dispatch(resetNotification());
-    }, 5000);
   };
 
   return (
