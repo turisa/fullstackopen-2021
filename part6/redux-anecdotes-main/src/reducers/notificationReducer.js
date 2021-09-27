@@ -1,3 +1,5 @@
+let timeoutHandle;
+
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
@@ -11,11 +13,12 @@ const notificationReducer = (state = null, action) => {
 
 export const setNotification = (content) => {
   return (dispatch) => {
+    clearTimeout(timeoutHandle);
     dispatch({
       type: 'SET_NOTIFICATION',
       data: { content },
     });
-    setTimeout(() => {
+    timeoutHandle = setTimeout(() => {
       dispatch(resetNotification());
     }, 5000);
   };
