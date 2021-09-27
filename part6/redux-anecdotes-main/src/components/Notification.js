@@ -9,7 +9,6 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1,
   };
-  console.log(notification);
 
   return notification ? <div style={style}>{notification}</div> : null;
 };
