@@ -14,10 +14,12 @@ const notificationReducer = (state = null, action) => {
 export const setNotification = (content) => {
   return (dispatch) => {
     clearTimeout(timeoutHandle);
+
     dispatch({
       type: 'SET_NOTIFICATION',
       data: { content },
     });
+
     timeoutHandle = setTimeout(() => {
       dispatch(resetNotification());
     }, 5000);
