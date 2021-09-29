@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
+import {
+  Link,
+  Switch,
+  Route,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 
 const Menu = () => {
   const padding = {
@@ -83,19 +89,24 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = (props) => {
+const CreateNew = ({ addNew }) => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.addNew({
+
+    addNew({
       content,
       author,
       info,
       votes: 0,
     });
+
+    setContent('');
+    setAuthor('');
+    setInfo('');
   };
 
   return (
@@ -126,7 +137,7 @@ const CreateNew = (props) => {
             onChange={(e) => setInfo(e.target.value)}
           />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );
@@ -152,9 +163,17 @@ const App = () => {
 
   const [notification, setNotification] = useState('');
 
+  const history = useHistory();
+
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
+
+    history.push('/anecdotes');
+    setNotification(`a new anecdote ${anecdote.content} created`);
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -179,6 +198,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification}
       <Switch>
         <Route path="/anecdotes/:id">
           <Anecdote anecdote={anecdote} />
