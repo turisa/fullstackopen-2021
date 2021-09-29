@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useField } from '..';
+import { useField } from '../hooks/index';
 
 const CreateNew = ({ addNew }) => {
   const content = useField('text');
