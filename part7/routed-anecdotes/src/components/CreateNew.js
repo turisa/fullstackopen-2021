@@ -19,9 +19,15 @@ const CreateNew = ({ addNew }) => {
   };
 
   const handleReset = () => {
-    content.clear();
-    author.clear();
-    info.clear();
+    const event = {
+      target: {
+        value: '',
+      },
+    };
+
+    content.onChange(event);
+    author.onChange(event);
+    info.onChange(event);
   };
 
   return (
@@ -30,15 +36,15 @@ const CreateNew = ({ addNew }) => {
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input value={content.value} onChange={(e) => content.onChange(e)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input value={author.value} onChange={(e) => author.onChange(e)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input value={info.value} onChange={(e) => info.onChange(e)} />
+          <input {...info} />
         </div>
         <button type="submit">create</button>
         <button type="reset">reset</button>
