@@ -18,10 +18,16 @@ const CreateNew = ({ addNew }) => {
     });
   };
 
+  const handleReset = () => {
+    content.clear();
+    author.clear();
+    info.clear();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
           <input
@@ -47,6 +53,7 @@ const CreateNew = ({ addNew }) => {
           />
         </div>
         <button type="submit">create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   );
