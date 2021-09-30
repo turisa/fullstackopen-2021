@@ -19,28 +19,29 @@ const useCountry = (name) => {
   const [country, setCountry] = useState(null);
 
   useEffect(() => {
-    axios.get('https://restcountries.com/v3.1/all').then((response) => {
-      const countries = response.data;
+    if (name) {
+      axios
+        .get(`https://restcountries.com/v3.1/name/${name}?fullText=true`)
+        .then((response) => {
+          const country = response.data[0];
 
-      const country = countries.find((country) =>
-        country.name.common.toLowerCase().includes(name.toLowerCase())
-      );
-
-      const countryObject = !country
-        ? { found: false }
-        : {
+          const countryObject = {
             found: true,
             data: {
               name: country.name.common,
               capital: country.capital[0],
               population: country.population,
-              flag: country.flags.png,
+              flag: country.flags.svg,
             },
           };
 
-      setCountry(countryObject);
-    }, []);
-  });
+          setCountry(countryObject);
+        })
+        .catch(() => {
+          setCountry({ found: false });
+        });
+    }
+  }, [name]);
 
   return country;
 };
