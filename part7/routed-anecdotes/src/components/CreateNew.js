@@ -30,27 +30,15 @@ const CreateNew = ({ addNew }) => {
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input
-            name="content"
-            value={content.value}
-            onChange={(e) => content.onChange(e)}
-          />
+          <input value={content.value} onChange={(e) => content.onChange(e)} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author.value}
-            onChange={(e) => author.onChange(e)}
-          />
+          <input value={author.value} onChange={(e) => author.onChange(e)} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info.value}
-            onChange={(e) => info.onChange(e)}
-          />
+          <input value={info.value} onChange={(e) => info.onChange(e)} />
         </div>
         <button type="submit">create</button>
         <button type="reset">reset</button>
