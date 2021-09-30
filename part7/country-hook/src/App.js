@@ -26,18 +26,19 @@ const useCountry = (name) => {
         country.name.common.toLowerCase().includes(name.toLowerCase())
       );
 
-      if (country) {
-        const countryObject = {
-          data: {
-            name: country.name.common,
-            capital: country.capital[0],
-            population: country.population,
-            flag: country.flags.png,
-          },
-        };
+      const countryObject = !country
+        ? { found: false }
+        : {
+            found: true,
+            data: {
+              name: country.name.common,
+              capital: country.capital[0],
+              population: country.population,
+              flag: country.flags.png,
+            },
+          };
 
-        setCountry(countryObject);
-      }
+      setCountry(countryObject);
     }, []);
   });
 
