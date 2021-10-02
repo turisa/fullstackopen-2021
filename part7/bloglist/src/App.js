@@ -13,7 +13,6 @@ import loginService from './services/login';
 import { initializeBlogs, likeBlog, deleteBlog } from './reducers/blogReducer';
 
 const App = () => {
-  //const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -53,18 +52,18 @@ const App = () => {
     }
   };
 
-  const handleLogout = (event) => {
+  const logout = (event) => {
     event.preventDefault();
 
     window.localStorage.removeItem('loggedBlogappUser');
     setUser(null);
   };
 
-  const handleLike = (blog) => {
+  const likeBlog = (blog) => {
     dispatch(likeBlog(blog));
   };
 
-  const handleDelete = (blog) => {
+  const deleteBlog = (blog) => {
     const result = window.confirm(`Delete blog ${blog.title}`);
     if (result) {
       dispatch(deleteBlog(blog.id));
@@ -85,7 +84,7 @@ const App = () => {
         successMessage={successMessage}
       />
       <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        {user.name} logged in <button onClick={logout}>logout</button>
       </p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm /**createBlog={createBlog}*/ />
@@ -96,8 +95,8 @@ const App = () => {
           .map((blog) => (
             <Blog
               key={blog.id}
-              likeBlog={handleLike}
-              deleteBlog={handleDelete}
+              likeBlog={likeBlog}
+              deleteBlog={deleteBlog}
               blog={blog}
               user={user}
             />
