@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Blog = ({ upvoteBlog, deleteBlog, blog, user }) => {
+const Blog = ({ likeBlog, deleteBlog, blog, user }) => {
   const [view, setView] = useState(false);
 
   const buttonLabel = view ? 'hide' : 'view';
@@ -30,7 +30,7 @@ const Blog = ({ upvoteBlog, deleteBlog, blog, user }) => {
         <p>{blog.url}</p>
         <p>
           {blog.likes}
-          <button className="likeButton" onClick={() => upvoteBlog(blog)}>
+          <button className="likeButton" onClick={() => likeBlog(blog)}>
             like
           </button>
         </p>

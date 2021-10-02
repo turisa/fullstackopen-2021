@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
@@ -9,17 +10,23 @@ import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
+import { initializeBlogs, likeBlog, deleteBlog } from './reducers/blogReducer';
+
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  //const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const blogFormRef = useRef();
 
+  const dispatch = useDispatch();
+
+  const blogs = useSelector((store) => store);
+
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -53,41 +60,14 @@ const App = () => {
     setUser(null);
   };
 
-  const createBlog = async (blogObject) => {
-    try {
-      const blog = await blogService.create(blogObject);
-      setBlogs(blogs.concat(blog));
-
-      setSuccessMessage(`a new blog ${blogObject.title} added`);
-      setTimeout(() => setSuccessMessage(null), 5000);
-
-      blogFormRef.current.toggleVisibility();
-    } catch (exception) {
-      // todo
-    }
+  const handleLike = (blog) => {
+    dispatch(likeBlog(blog));
   };
 
-  const upvoteBlog = async (blog) => {
-    const newBlog = { ...blog, likes: blog.likes + 1 };
-    try {
-      await blogService.update(newBlog);
-
-      setBlogs(blogs.map((blog) => (blog.id === newBlog.id ? newBlog : blog)));
-    } catch (exception) {
-      // todo
-    }
-  };
-
-  const deleteBlog = async (blog) => {
-    try {
-      const result = window.confirm(`Delete blog ${blog.title}`);
-      if (result) {
-        await blogService.remove(blog.id);
-
-        setBlogs(blogs.filter((blog_) => blog_.id !== blog.id));
-      }
-    } catch (exception) {
-      // todo
+  const handleDelete = (blog) => {
+    const result = window.confirm(`Delete blog ${blog.title}`);
+    if (result) {
+      dispatch(deleteBlog(blog.id));
     }
   };
 
@@ -108,7 +88,7 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} />
+        <BlogForm /**createBlog={createBlog}*/ />
       </Togglable>
       <div id="blogsDiv">
         {blogs
@@ -116,8 +96,8 @@ const App = () => {
           .map((blog) => (
             <Blog
               key={blog.id}
-              upvoteBlog={upvoteBlog}
-              deleteBlog={deleteBlog}
+              likeBlog={handleLike}
+              deleteBlog={handleDelete}
               blog={blog}
               user={user}
             />
