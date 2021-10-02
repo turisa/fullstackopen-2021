@@ -38,7 +38,7 @@ const App = () => {
     }
   }, []);
 
-  const login = async (userObject) => {
+  const handleLogin = async (userObject) => {
     try {
       const user = await loginService.login(userObject);
 
@@ -52,18 +52,18 @@ const App = () => {
     }
   };
 
-  const logout = (event) => {
+  const handleLogout = (event) => {
     event.preventDefault();
 
     window.localStorage.removeItem('loggedBlogappUser');
     setUser(null);
   };
 
-  const likeBlog = (blog) => {
+  const handleLikeBlog = (blog) => {
     dispatch(likeBlog(blog));
   };
 
-  const deleteBlog = (blog) => {
+  const handleDeleteBlog = (blog) => {
     const result = window.confirm(`Delete blog ${blog.title}`);
     if (result) {
       dispatch(deleteBlog(blog.id));
@@ -74,7 +74,7 @@ const App = () => {
     <div>
       <h1>Log in to application</h1>
       <Notification errorMessage={errorMessage} />
-      <LoginForm login={login} />
+      <LoginForm login={handleLogin} />
     </div>
   ) : (
     <div>
@@ -84,7 +84,7 @@ const App = () => {
         successMessage={successMessage}
       />
       <p>
-        {user.name} logged in <button onClick={logout}>logout</button>
+        {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm /**createBlog={createBlog}*/ />
@@ -95,8 +95,8 @@ const App = () => {
           .map((blog) => (
             <Blog
               key={blog.id}
-              likeBlog={likeBlog}
-              deleteBlog={deleteBlog}
+              likeBlog={handleLikeBlog}
+              deleteBlog={handleDeleteBlog}
               blog={blog}
               user={user}
             />
