@@ -1,24 +1,25 @@
 import blogService from '../services/blogs';
 
 const blogReducer = (state = [], action) => {
-  let blogs;
-
   switch (action.type) {
     case 'INIT_BLOGS':
-      blogs = action.data;
-      return blogs;
-    case 'UPVOTE_BLOG':
-      const upvotedBlog = action.data;
+      const initialBlogs = action.data;
 
-      blogs = state.map((blog) =>
-        blog.id === upvotedBlog.id ? upvotedBlog : blog
+      return initialBlogs;
+    case 'CREATE_BLOG':
+      const newBlog = action.data;
+
+      return state.concat(newBlog);
+    case 'UPDATE_BLOG':
+      const updatedBlog = action.data;
+
+      return state.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
       );
-      return blogs;
     case 'DELETE_BLOG':
       const id = action.data;
 
-      blogs = state.filter((blog) => blog.id !== id);
-      return blogs;
+      return state.filter((blog) => blog.id !== id);
     default:
       return state;
   }
@@ -34,14 +35,30 @@ export const initializeBlogs = () => {
   };
 };
 
+export const createBlog = (blog) => {
+  return async (dispatch, getState) => {
+    try {
+      const newBlog = await blogService.create(blog);
+      const { name, username } = getState().user;
+
+      dispatch({
+        type: 'CREATE_BLOG',
+        data: { ...newBlog, user: { name, username, id: newBlog.id } },
+      });
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
+};
+
 export const likeBlog = (blog) => {
   return async (dispatch) => {
     const newBlog = { ...blog, likes: blog.likes + 1 };
-    const returnedBlog = await blogService.update(newBlog);
+    await blogService.update(newBlog);
 
-    return dispatch({
-      type: 'UPVOTE_BLOG',
-      data: returnedBlog,
+    dispatch({
+      type: 'UPDATE_BLOG',
+      data: newBlog,
     });
   };
 };
@@ -50,7 +67,7 @@ export const deleteBlog = (id) => {
   return async (dispatch) => {
     await blogService.remove(id);
 
-    return dispatch({
+    dispatch({
       type: 'DELETE_BLOG',
       data: id,
     });
