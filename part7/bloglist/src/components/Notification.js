@@ -1,12 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const Notification = ({ errorMessage, successMessage }) => {
-  if (errorMessage) {
-    return <div>{errorMessage}</div>;
-  }
+const Notification = () => {
+  const notification = useSelector((store) => store.notification);
 
-  if (successMessage) {
-    return <div>{successMessage}</div>;
+  if (notification) {
+    const { content, notificationType } = notification;
+    return <div className={notificationType}>{content}</div>;
   }
 
   return null;
