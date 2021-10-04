@@ -77,7 +77,9 @@ export const likeBlog = (blog) => {
 
       dispatch(setSuccessNotification(`liked ${blog.title}`));
     } catch (exception) {
-      dispatch(logout());
+      if (exception.includes('failed with status code 401')) {
+        dispatch(logout());
+      }
     }
   };
 };
@@ -94,7 +96,9 @@ export const deleteBlog = ({ title, id }) => {
 
       dispatch(setSuccessNotification(`deleted ${title}`));
     } catch (exception) {
-      dispatch(logout());
+      if (exception.includes('failed with status code 401')) {
+        dispatch(logout());
+      }
     }
   };
 };
