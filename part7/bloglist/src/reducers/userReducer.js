@@ -5,7 +5,6 @@ import { resetNotification, setErrorNotification } from './notificationReducer';
 const userReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_USER':
-      console.log('The action has been dispatched');
       return action.data;
     case 'RESET_USER':
       return null;
@@ -21,8 +20,6 @@ export const loadUserFromWindow = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       blogService.setToken(user.token);
-
-      console.log('User exists on window');
 
       dispatch({
         type: 'SET_USER',

@@ -15,7 +15,11 @@ const Blog = ({ blog }) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteBlog(blog));
+    const confirm = window.confirm(`delete ${blog.title}?`);
+
+    if (confirm) {
+      dispatch(deleteBlog(blog));
+    }
   };
 
   const buttonLabel = view ? 'hide' : 'view';
