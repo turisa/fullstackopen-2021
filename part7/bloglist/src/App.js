@@ -7,8 +7,9 @@ import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
 import Notification from './components/Notification';
 
-import { initializeBlogs } from './reducers/blogReducer';
+import { initializeBlogs } from './reducers/blogsReducer';
 import { loadUserFromWindow, logout } from './reducers/userReducer';
+import Users from './components/Users';
 
 const App = () => {
   const blogFormRef = useRef();
@@ -53,6 +54,7 @@ const App = () => {
             <Blog key={blog.id} blog={blog} />
           ))}
       </div>
+      <Users />
     </div>
   );
 };
