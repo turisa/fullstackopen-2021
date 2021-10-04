@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { likeBlog, deleteBlog } from '../reducers/blogReducer';
+import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
 
 const Blog = ({ blog }) => {
   const [view, setView] = useState(false);
