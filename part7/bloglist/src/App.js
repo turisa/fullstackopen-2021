@@ -8,13 +8,9 @@ import Togglable from './components/Togglable';
 import Notification from './components/Notification';
 
 import { initializeBlogs } from './reducers/blogReducer';
-import { loadUserFromWindow, login, logout } from './reducers/userReducer';
+import { loadUserFromWindow, logout } from './reducers/userReducer';
 
 const App = () => {
-  //const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
   const blogFormRef = useRef();
 
   const dispatch = useDispatch();
@@ -37,16 +33,13 @@ const App = () => {
   return !user ? (
     <div>
       <h1>Log in to application</h1>
-      <Notification errorMessage={errorMessage} />
+      <Notification />
       <LoginForm />
     </div>
   ) : (
     <div>
       <h1>blogs</h1>
-      <Notification
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-      />
+      <Notification />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>

@@ -15,7 +15,7 @@ const Blog = ({ blog }) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteBlog(blog.id));
+    dispatch(deleteBlog(blog));
   };
 
   const buttonLabel = view ? 'hide' : 'view';
@@ -45,18 +45,12 @@ const Blog = ({ blog }) => {
         <p>{blog.url}</p>
         <p>
           {blog.likes}
-          <button
-            className="likeButton"
-            onClick={() => dispatch(likeBlog(blog))}
-          >
+          <button className="likeButton" onClick={handleLike}>
             like
           </button>
         </p>
         <p>{blog.user.name}</p>
-        <button
-          style={showIfAddedByUser}
-          onClick={() => dispatch(deleteBlog(blog.id))}
-        >
+        <button style={showIfAddedByUser} onClick={handleDelete}>
           delete
         </button>
       </div>

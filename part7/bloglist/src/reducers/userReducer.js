@@ -1,5 +1,6 @@
 import blogService from '../services/blogs';
 import loginService from '../services/login';
+import { resetNotification, setErrorNotification } from './notificationReducer';
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
@@ -14,40 +15,52 @@ const userReducer = (state = null, action) => {
 };
 
 export const loadUserFromWindow = () => {
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
+  return (dispatch) => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
 
-  if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    blogService.setToken(user.token);
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      blogService.setToken(user.token);
 
-    console.log('User exists on window');
+      console.log('User exists on window');
 
-    return {
-      type: 'SET_USER',
-      data: user,
-    };
-  }
+      dispatch({
+        type: 'SET_USER',
+        data: user,
+      });
+    }
+  };
 };
 
 export const login = (username, password) => {
   return async (dispatch) => {
-    const user = await loginService.login({ username, password });
+    try {
+      const user = await loginService.login({ username, password });
 
-    window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
-    blogService.setToken(user.token);
+      dispatch(resetNotification());
 
-    dispatch({
-      type: 'SET_USER',
-      data: user,
-    });
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
+      blogService.setToken(user.token);
+
+      dispatch({
+        type: 'SET_USER',
+        data: user,
+      });
+    } catch (exception) {
+      dispatch(setErrorNotification('invalid username or password'));
+    }
   };
 };
 
 export const logout = () => {
-  window.localStorage.clear();
+  return (dispatch) => {
+    window.localStorage.clear();
 
-  return {
-    type: 'RESET_USER',
+    dispatch(resetNotification());
+
+    dispatch({
+      type: 'RESET_USER',
+    });
   };
 };
 
