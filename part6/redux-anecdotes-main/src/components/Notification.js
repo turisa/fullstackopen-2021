@@ -8,7 +8,12 @@ const Notification = ({ notification }) => {
     borderWidth: 1,
   };
 
-  return notification ? <div style={style}>{notification}</div> : null;
+  if (notification) {
+    const content = notification.content;
+    return <div style={style}>{content}</div>;
+  }
+
+  return null;
 };
 
 const mapStateToProps = (state) => {

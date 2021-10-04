@@ -1,10 +1,18 @@
-let timeoutHandle;
-
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      return action.data.content;
+      if (state) {
+        const timeoutHandle = state.timeoutHandle;
+        clearTimeout(timeoutHandle);
+      }
+
+      return action.data;
     case 'RESET_NOTIFICATION':
+      if (state) {
+        const timeoutHandle = state.timeoutHandle;
+        clearTimeout(timeoutHandle);
+      }
+
       return null;
     default:
       return state;
@@ -13,22 +21,20 @@ const notificationReducer = (state = null, action) => {
 
 export const setNotification = (content) => {
   return (dispatch) => {
-    clearTimeout(timeoutHandle);
+    const timeoutHandle = setTimeout(() => dispatch(resetNotification()), 5000);
 
     dispatch({
       type: 'SET_NOTIFICATION',
-      data: { content },
+      data: { content, timeoutHandle },
     });
-
-    timeoutHandle = setTimeout(() => {
-      dispatch(resetNotification());
-    }, 5000);
   };
 };
 
 export const resetNotification = () => {
-  return {
-    type: 'RESET_NOTIFICATION',
+  return (dispatch) => {
+    dispatch({
+      type: 'RESET_NOTIFICATION',
+    });
   };
 };
 
