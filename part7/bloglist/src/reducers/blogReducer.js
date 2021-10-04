@@ -53,10 +53,10 @@ export const createBlog = (blog) => {
       });
 
       dispatch(setSuccessNotification(`added ${blog.title}`));
-    } catch (exception) {
-      if (exception.includes('failed with status code 400')) {
+    } catch (error) {
+      if (error.message.includes('failed with status code 400')) {
         dispatch(setErrorNotification('the blog must have a title'));
-      } else if (exception.includes('failed with status code 401')) {
+      } else if (error.message.includes('failed with status code 401')) {
         dispatch(logout());
       }
     }
@@ -76,8 +76,8 @@ export const likeBlog = (blog) => {
       });
 
       dispatch(setSuccessNotification(`liked ${blog.title}`));
-    } catch (exception) {
-      if (exception.includes('failed with status code 401')) {
+    } catch (error) {
+      if (error.message.includes('failed with status code 401')) {
         dispatch(logout());
       }
     }
@@ -95,8 +95,8 @@ export const deleteBlog = ({ title, id }) => {
       });
 
       dispatch(setSuccessNotification(`deleted ${title}`));
-    } catch (exception) {
-      if (exception.includes('failed with status code 401')) {
+    } catch (error) {
+      if (error.message.includes('failed with status code 401')) {
         dispatch(logout());
       }
     }
