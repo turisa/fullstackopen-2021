@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
 
 import Blogs from './components/Blogs';
+import BlogDetail from './components/BlogDetail';
 import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
 
@@ -48,6 +49,9 @@ const App = () => {
       <Switch>
         <Route path="/login">
           {user ? <Redirect to="/blogs" /> : <LoginForm />}
+        </Route>
+        <Route path="/blogs/:id">
+          {user ? <BlogDetail blog={blogToShow} /> : <Redirect to="/login" />}
         </Route>
         <Route path="/blogs">
           {user ? <Blogs /> : <Redirect to="/login" />}
