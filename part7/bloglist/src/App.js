@@ -1,22 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Switch, Route, Link, Redirect } from 'react-router-dom';
 
-import Blog from './components/Blog';
-import BlogForm from './components/BlogForm';
+import Blogs from './components/Blogs';
 import LoginForm from './components/LoginForm';
-import Togglable from './components/Togglable';
 import Notification from './components/Notification';
+import Navbar from './components/Navbar';
 
 import { initializeBlogs } from './reducers/blogsReducer';
-import { loadUserFromWindow, logout } from './reducers/userReducer';
+import { loadUserFromWindow } from './reducers/userReducer';
 import Users from './components/Users';
 
 const App = () => {
-  const blogFormRef = useRef();
-
   const dispatch = useDispatch();
 
-  const blogs = useSelector((store) => store.blogs);
   const user = useSelector((store) => store.user);
 
   useEffect(() => {
@@ -27,34 +24,20 @@ const App = () => {
     dispatch(initializeBlogs());
   }, [dispatch]);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
-  return !user ? (
+  return (
     <div>
-      <h1>Log in to application</h1>
-      <Notification />
-      <LoginForm />
-    </div>
-  ) : (
-    <div>
-      <h1>blogs</h1>
-      <Notification />
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm />
-      </Togglable>
-      <div id="blogsDiv">
-        {blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-      </div>
-      <Users />
+      {user ? <Navbar /> : null}
+      <Switch>
+        <Route path="/login">
+          {user ? <Redirect to="/blogs" /> : <LoginForm />}
+        </Route>
+        <Route path="/blogs">
+          {user ? <Blogs /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/users">
+          {user ? <Users /> : <Redirect to="/login" />}
+        </Route>
+      </Switch>
     </div>
   );
 };
