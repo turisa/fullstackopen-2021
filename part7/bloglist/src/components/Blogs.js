@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
