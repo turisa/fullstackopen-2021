@@ -51,7 +51,7 @@ const App = () => {
           {user ? <Redirect to="/blogs" /> : <LoginForm />}
         </Route>
         <Route path="/blogs/:id">
-          {user ? <BlogDetail /> : <Redirect to="/login" />}
+          {user ? <BlogDetail blog={blogToShow} /> : <Redirect to="/login" />}
         </Route>
         <Route path="/blogs">
           {user ? <Blogs /> : <Redirect to="/login" />}

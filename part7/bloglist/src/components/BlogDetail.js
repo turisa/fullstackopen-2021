@@ -5,15 +5,11 @@ import { useHistory, useParams } from 'react-router';
 
 import { commentBlog } from '../reducers/blogsReducer';
 
-const BlogDetail = () => {
+const BlogDetail = ({ blog }) => {
   const [comment, setComment] = useState('');
   const history = useHistory();
 
   const user = useSelector((store) => store.user);
-  const blogs = useSelector((store) => store.blogs);
-
-  const blogId = useParams().id;
-  const blog = blogs.find((blog) => blog.id === blogId);
 
   const dispatch = useDispatch();
 
