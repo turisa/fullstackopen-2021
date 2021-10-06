@@ -83,6 +83,23 @@ export const likeBlog = (blog) => {
   };
 };
 
+export const commentBlog = (id, content) => {
+  return async (dispatch) => {
+    try {
+      const newBlog = await blogService.addComment(id, content);
+
+      dispatch({
+        type: 'UPDATE_BLOG',
+        data: newBlog,
+      });
+    } catch (error) {
+      if (error.message.includes('failed with status code 401')) {
+        dispatch(logout());
+      }
+    }
+  };
+};
+
 export const deleteBlog = ({ title, id }) => {
   return async (dispatch) => {
     try {
