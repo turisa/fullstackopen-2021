@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 import { commentBlog } from '../reducers/blogsReducer';
 
-const BlogDetail = ({ blog }) => {
+const BlogDetail = () => {
   const [comment, setComment] = useState('');
-
   const history = useHistory();
 
   const user = useSelector((store) => store.user);
+  const blogs = useSelector((store) => store.blogs);
+
+  const blogId = useParams().id;
+  const blog = blogs.find((blog) => blog.id === blogId);
 
   const dispatch = useDispatch();
 
@@ -65,6 +68,11 @@ const BlogDetail = ({ blog }) => {
 
         <button type="submit">add comment</button>
       </form>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </div>
   ) : null;
 };

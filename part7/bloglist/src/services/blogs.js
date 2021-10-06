@@ -52,7 +52,7 @@ const addComment = async (id, content) => {
     config
   );
 
-  return response;
+  return response.data;
 };
 
 const remove = async (id) => {

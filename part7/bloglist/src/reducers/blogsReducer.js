@@ -87,7 +87,7 @@ export const commentBlog = (id, content) => {
   return async (dispatch) => {
     try {
       const newBlog = await blogService.addComment(id, content);
-
+      console.log(newBlog);
       dispatch({
         type: 'UPDATE_BLOG',
         data: newBlog,
