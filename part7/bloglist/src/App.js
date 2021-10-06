@@ -6,11 +6,11 @@ import Blogs from './components/Blogs';
 import BlogDetail from './components/BlogDetail';
 import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
+import Users from './components/Users';
+import UserDetail from './components/UserDetail';
 
 import { initializeBlogs } from './reducers/blogsReducer';
 import { loadUserFromWindow } from './reducers/userReducer';
-import Users from './components/Users';
-import UserDetail from './components/UserDetail';
 import { initializeUsers } from './reducers/usersReducer';
 
 const App = () => {

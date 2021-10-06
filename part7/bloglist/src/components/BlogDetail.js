@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { commentBlog } from '../reducers/blogsReducer';
 
