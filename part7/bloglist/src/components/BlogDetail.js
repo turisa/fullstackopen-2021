@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
 import { useHistory } from 'react-router';
 
+import { commentBlog } from '../reducers/blogsReducer';
+
 const BlogDetail = ({ blog }) => {
+  const [comment, setComment] = useState('');
+
   const history = useHistory();
 
   const user = useSelector((store) => store.user);
@@ -22,6 +26,18 @@ const BlogDetail = ({ blog }) => {
 
       history.push('/blogs');
     }
+  };
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const addComment = (event) => {
+    event.preventDefault();
+
+    dispatch(commentBlog(blog.id, comment));
+
+    setComment('');
   };
 
   const showIfAddedByUser = {
@@ -43,6 +59,12 @@ const BlogDetail = ({ blog }) => {
       <button style={showIfAddedByUser} onClick={handleDelete}>
         delete
       </button>
+      <h1>comments</h1>
+      <form onSubmit={addComment}>
+        <input type="text" onChange={handleCommentChange} value={comment} />
+
+        <button type="submit">add comment</button>
+      </form>
     </div>
   ) : null;
 };
