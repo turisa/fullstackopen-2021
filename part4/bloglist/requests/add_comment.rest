@@ -3,5 +3,5 @@ Authorization: bearer <token>
 Content-Type: application/json
 
 {
-    "comment": "This one is my favorite"
+    "content": "This one is my favorite"
 }

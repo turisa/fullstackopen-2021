@@ -33,11 +33,11 @@ blogsRouter.put('/:id/comments', async (request, response) => {
   }
 
   const blogId = request.params.id;
-  const comment = request.body.comment;
+  const content = request.body.content;
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     blogId,
-    { $push: { comments: comment } },
+    { $push: { comments: content } },
     { new: true }
   );
 
