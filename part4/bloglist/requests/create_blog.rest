@@ -1,8 +1,9 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3003/api/blogs
+Authorization: bearer <token>
 Content-Type: application/json
 
 {
-    "title": "Thin Ice Blog",
-    "author": "WWF Arctic",
-    "url": "http://arctic.blogs.panda.org/"
+    "title": "Loopy",
+    "author": "Uncle Bob",
+    "url": "https://blog.cleancoder.com/uncle-bob/2020/09/30/loopy.html"
 }

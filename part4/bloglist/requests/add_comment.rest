@@ -1,0 +1,7 @@
+PUT http://localhost:3003/api/<blogId>/comments
+Authorization: bearer <token>
+Content-Type: application/json
+
+{
+    "comment": "This one is my favorite"
+}
