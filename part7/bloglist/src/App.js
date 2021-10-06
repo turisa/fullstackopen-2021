@@ -62,6 +62,9 @@ const App = () => {
         <Route path="/users">
           {user ? <Users /> : <Redirect to="/login" />}
         </Route>
+        <Route path="/">
+          <Redirect to="/blogs" />
+        </Route>
       </Switch>
     </div>
   );
