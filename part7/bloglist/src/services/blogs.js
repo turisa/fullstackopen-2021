@@ -39,6 +39,22 @@ const update = async (newObject) => {
   return response.data;
 };
 
+const addComment = async (id, content) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  const response = await axios.put(
+    `${baseUrl}/${id}/comment`,
+    { content },
+    config
+  );
+
+  return response;
+};
+
 const remove = async (id) => {
   const config = {
     headers: {
@@ -47,11 +63,11 @@ const remove = async (id) => {
   };
 
   const response = await axios.delete(`${baseUrl}/${id}`, config);
-  console.log(response.data);
 };
 
 const blogService = {
   setToken,
+  addComment,
   create,
   update,
   remove,
