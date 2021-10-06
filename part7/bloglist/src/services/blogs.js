@@ -47,7 +47,7 @@ const addComment = async (id, content) => {
   };
 
   const response = await axios.put(
-    `${baseUrl}/${id}/comment`,
+    `${baseUrl}/${id}/comments`,
     { content },
     config
   );
