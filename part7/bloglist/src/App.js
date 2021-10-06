@@ -44,7 +44,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="container">
       {user ? <Navbar /> : null}
       <Switch>
         <Route path="/login">
