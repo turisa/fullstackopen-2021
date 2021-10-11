@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, UserInputError, gql } = require('apollo-server');
 const { v1: uuid } = require('uuid');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -55,22 +55,36 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    authorCount: () => Author.find({}).length,
-    bookCount: () => Book.find({}).length,
-    allBooks: (root, args) => {
-      return Book.find({});
+    authorCount: () => Author.collection.countDocuments(),
+    bookCount: () => Book.collection.countDocuments(),
+    allBooks: async (root, args) => {
+      const result = Book.find({});
+      return result;
     },
-    allAuthors: () => {
-      return Author.find({});
+    allAuthors: async () => {
+      const result = await Author.find({});
+      return result;
     },
   },
 
   Mutation: {
-    addBook: (root, args) => {
-      const author = new Author(args);
-      const newAuthor = author.save();
+    addBook: async (root, args) => {
+      const author = await Author.findOneAndUpdate(
+        { name: args.author }, // find a document with that filter
+        { $setOnInsert: new Author({ name: args.author }) }, // document to insert when nothing was found
+        { upsert: true, new: true }
+      );
 
-      return newAuthor;
+      const book = new Book({ ...args, author });
+
+      try {
+        await book.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+      return book;
     },
   },
 };
