@@ -1,5 +1,23 @@
 const { ApolloServer, gql } = require('apollo-server');
 const { v1: uuid } = require('uuid');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+const Author = require('./models/author');
+const Book = require('./models/book');
+
+const MONGODB_URI = process.env.MONGODB_URI;
+
+console.log('connecting to', MONGODB_URI);
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB');
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message);
+  });
 
 let authors = [
   {
@@ -118,6 +136,8 @@ const resolvers = {
     authorCount: () => authors.length,
     bookCount: () => books.length,
     allBooks: (root, args) => {
+      return;
+      /*
       if (args.author) {
         return books.filter((book) => book.author === args.author);
       }
@@ -125,7 +145,7 @@ const resolvers = {
       if (args.genre) {
         return books.filter((book) => book.genres.includes(args.genre));
       }
-
+      */
       return books;
     },
     allAuthors: () => {
